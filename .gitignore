@@ -1,0 +1,67 @@
+## Ignore Visual Studio temporary files, build results, and user-specific files
+
+# User-specific
+*.rsuser
+*.suo
+*.user
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+out/
+
+# ASP.NET runtime files
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+logs/
+
+# Entity Framework Core
+# KEEP migrations in source control
+# Remove this line if you already added it:
+# Migrations/
+
+# User secrets
+**/secrets.json
+
+# NuGet packages
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.nuspec
+project.assets.json
+
+# IDE settings
+.vs/
+.vscode/
+.idea/
+*.code-workspace
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+docker-compose.*.yml
+
+# Publish output
+publish/
+wwwroot/dist/
+wwwroot/build/
+
+# Coverage and test output
+TestResults/
+coverage/
+*.coverage
+*.cobertura.xml
+lcov-report/
+
+# Others
+*.tlog
+*.vspscc
+*.vssscc
+.DS_Store
+Thumbs.db
