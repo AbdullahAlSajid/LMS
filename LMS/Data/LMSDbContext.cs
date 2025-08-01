@@ -1,4 +1,4 @@
-﻿using LMS.Models;
+﻿using LMS.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LMS.Data

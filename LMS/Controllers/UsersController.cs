@@ -1,5 +1,6 @@
 ﻿using LMS.Data;
-using LMS.Models;
+using LMS.Models.Dtos.UserDtos;
+using LMS.Models.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,36 +40,45 @@ namespace LMS.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        public async Task<ActionResult<User>> CreateUser(AddUserDto userDto)
         {
-            if(user == null)
+            if(userDto == null)
             {
                 return BadRequest();
             }
 
-            user.CreatedAt = DateTime.Now;
+            var user = new User()
+            {
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                Email = userDto.Email,
+                CreatedAt = DateTime.Now,
+                PasswordHash = userDto.PasswordHash,
+                Status = userDto.Status,
+                TenantId = userDto.TenantId
+            };
 
             _context.Users.Add(user);
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, userDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, User updatedUser)
+        public async Task<IActionResult> UpdateUser(int id, UpdateUserDto updatedUser)
         {
             var user = await _context.Users.FindAsync(id);
 
             if (user == null)
                 return NotFound();
 
-            user.Id = updatedUser.Id;
             user.TenantId = updatedUser.TenantId;
             user.FirstName = updatedUser.FirstName;
             user.LastName = updatedUser.LastName;
             user.Email = updatedUser.Email;
             user.Status = updatedUser.Status;
+            user.PasswordHash = updatedUser.PasswordHash;
 
             await _context.SaveChangesAsync();
 

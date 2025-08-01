@@ -1,21 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using LMS.Models.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace LMS.Models
+namespace LMS.Models.Dtos.UserDtos
 {
-
-    public enum UserStatus
+    public class AddUserDto
     {
-        Active = 0,
-        Invited = 1,
-        Suspended = 2
-    }
-
-    public class User
-    {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         //[ForeignKey("Tenant")]
         public int TenantId { get; set; }
@@ -39,12 +28,5 @@ namespace LMS.Models
 
         [Required]
         public UserStatus Status { get; set; }
-
-        public DateTime? LastLoginAt { get; set; }
-
-        public DateTime? DeletedAt { get; set; }
-
-        [Required]
-        public DateTime CreatedAt { get; set; }
     }
 }
