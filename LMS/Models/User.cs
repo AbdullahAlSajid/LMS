@@ -14,7 +14,7 @@ namespace LMS.Models
     public class User
     {
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required]
         //[ForeignKey("Tenant")]
