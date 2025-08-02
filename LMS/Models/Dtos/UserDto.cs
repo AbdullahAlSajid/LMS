@@ -1,13 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using LMS.Models.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace LMS.Models.Entities
+namespace LMS.Models.Dtos
 {
-    public class User
+    public class UserDto
     {
-        [Key]
-        public int Id { get; set; }
-
         [MaxLength(50)]
         public required string FirstName { get; set; }
 
@@ -20,9 +17,5 @@ namespace LMS.Models.Entities
 
         [MinLength(6)]
         public required string PasswordHash { get; set; }
-
-        public DateTime? DeletedAt { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

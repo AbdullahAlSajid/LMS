@@ -1,6 +1,7 @@
 ﻿using LMS.Data;
-using LMS.Models.Dtos.UserDtos;
+using LMS.Models.Dtos;
 using LMS.Models.Entities;
+using LMS.Services.UserModule;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,76 +12,56 @@ namespace LMS.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly LMSDbContext _context;
+        private readonly IUserService _userService;
 
-        public UsersController(LMSDbContext lMSDbContext) 
+        public UsersController(IUserService userService) 
         {
-            _context = lMSDbContext;
+            _userService = userService;
         }
-
+         
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetUsers()
+        public async Task<ActionResult<List<User>>> GetAllUsers()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _userService.GetAllUsers();
 
             return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<User>> GetUserById(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _userService.GetUserById(id);
 
-            if(user == null)
-            {
+            if (user == null)
                 return NotFound();
-            }
 
             return Ok(user);
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(AddUserDto userDto)
+        public async Task<ActionResult<User>> CreateUser(UserDto userDto)
         {
-            if(userDto == null)
-            {
-                return BadRequest();
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            var user = new User()
-            {
-                FirstName = userDto.FirstName,
-                LastName = userDto.LastName,
-                Email = userDto.Email,
-                CreatedAt = DateTime.Now,
-                PasswordHash = userDto.PasswordHash,
-                Status = userDto.Status,
-                TenantId = userDto.TenantId
-            };
+            var created = await _userService.CreateUser(userDto);
 
-            _context.Users.Add(user);
-
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, userDto);
+            return CreatedAtAction(
+                nameof(GetUserById),
+                new { id = created.Id },
+                created);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, UpdateUserDto updatedUser)
+        public async Task<IActionResult> UpdateUser(int id, UserDto updatedUser)
         {
-            var user = await _context.Users.FindAsync(id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            if (user == null)
+            var result = await _userService.UpdateUser(id, updatedUser);
+
+            if (result == null)
                 return NotFound();
-
-            user.TenantId = updatedUser.TenantId;
-            user.FirstName = updatedUser.FirstName;
-            user.LastName = updatedUser.LastName;
-            user.Email = updatedUser.Email;
-            user.Status = updatedUser.Status;
-            user.PasswordHash = updatedUser.PasswordHash;
-
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -88,14 +69,11 @@ namespace LMS.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser (int id)
         {
-            var user = await _context.Users.FindAsync (id);
+            var success = await _userService.DeleteUser(id);
 
-            if (user == null)
+            if (!success)
                 return NotFound();
 
-            _context.Users.Remove(user);
-
-            await _context.SaveChangesAsync();
             return NoContent();
         }
     }
