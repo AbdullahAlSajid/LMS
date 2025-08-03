@@ -1,4 +1,4 @@
-﻿using LMS.Models;
+﻿using LMS.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LMS.Data
@@ -9,7 +9,7 @@ namespace LMS.Data
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
