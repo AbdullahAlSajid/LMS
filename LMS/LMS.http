@@ -1,6 +1,43 @@
-@LSM_HostAddress = http://localhost:5254
+﻿@LMS_HostAddress = http://localhost:5254
 
-GET {{LSM_HostAddress}}/weatherforecast/
+GET {{LMS_HostAddress}}/api/users
 Accept: application/json
 
 ###
+
+GET {{LMS_HostAddress}}/api/users/1
+Accept: application/json
+
+###
+
+POST {{LMS_HostAddress}}/api/users
+Accept: application/json
+Content-Type : application/json
+{
+  "tenantId": 1,
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "passwordHash": "SecurePasswordHash123!",
+  "status": "Active"
+}
+
+###
+
+PUT {{LMS_HostAddress}}/api/users/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 1,
+  "tenantId": 1,
+  "firstName": "John",
+  "lastName": "Doe‑Updated",
+  "email": "john.doe@example.com",
+  "status": "Suspended"
+}
+
+###
+
+DELETE {{LMS_HostAddress}}/api/users/1
+Accept: application/json
