@@ -2,6 +2,7 @@
 using LMS.Services;
 using Microsoft.AspNetCore.Mvc;
 using LMS.Models;
+using LMS.Models.Entities;
 
 
 namespace LMS.Test

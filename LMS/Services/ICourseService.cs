@@ -1,4 +1,4 @@
-﻿using LMS.Models;
+﻿using LMS.Models.Entities;
 
 namespace LMS.Services
 {

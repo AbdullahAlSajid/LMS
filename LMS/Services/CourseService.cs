@@ -1,5 +1,5 @@
 ﻿using LMS.Data;
-using LMS.Models;
+using LMS.Models.Entities;
 using System;
 
 namespace LMS.Services
